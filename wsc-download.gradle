@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.force.api', name: 'force-wsc', version: "${version}"
+}
+
+task download(type: Copy) {
+  from sourceSets.main.runtimeClasspath
+  into 'jar'
+}
