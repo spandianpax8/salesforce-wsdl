@@ -7,5 +7,5 @@ Directory to hold jar files required for SalesForce WSDL jar generation. Rhino j
 Test WSDL file and Prod WSDL file
 
 # Steps for publishing a new version
-Step 1: Update wsdl.test.xml and wsdl.prod.xml with approriate files downloaded from SalesForce. Commit and Push to "main" branch.
-Step 2: Create a release. Tag name should be the version of sales-force-prod and sales-force-test artificats in Pax8's GitHub packages.
+1. Update wsdl.test.xml and wsdl.prod.xml with approriate files downloaded from SalesForce. Commit and Push to "main" branch.
+2. Create a release. Tag name should be the version of sales-force-prod and sales-force-test artificats in Pax8's GitHub packages.
