@@ -16,6 +16,7 @@ jobs:
       GROUP_ID: com.pax8.sftrial
       ARTIFACT_ID: sales-force-test
       JAR_FILE_NAME_PREFIX: salesForceTest
+      WSDL_FILE: wsdl.test.xml
 
     steps:
       - name: 'Checkout'
@@ -28,7 +29,7 @@ jobs:
 
       - name: WSDL Version
         run: |
-          version=`cat wsdl.test.xml | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
+          version=`cat ${{ env.WSDL_FILE }} | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
           echo "::set-output name=version::${version}.+"
         id: wsdl_version
 
@@ -38,14 +39,14 @@ jobs:
 
       - name: Build Jar
         run: |
-          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc wsdl.test.xml salesForceTest-${{ github.event.release.tag_name }}.jar
+          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc ${{ env.WSDL_FILE }} ${{ env.JAR_FILE_NAME_PREFIX }}-${{ github.event.release.tag_name }}.jar
 
       - name: Publish Jar
         env:
           GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.USER_GITHUB }}
           GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
-          mvn -B --settings settings.xml deploy:deploy-file \
+          mvn -B --settings github-packages-mvn-settings.xml deploy:deploy-file \
                   -DgroupId=${{ env.GROUP_ID }} \
                   -DartifactId=${{ env.ARTIFACT_ID }} \
                   -Dversion=${{ github.event.release.tag_name }} \
@@ -60,7 +61,8 @@ jobs:
     env:
       GROUP_ID: com.pax8.sftrial
       ARTIFACT_ID: sales-force-test
-      JAR_FILE_NAME_PREFIX: salesForceTest
+      JAR_FILE_NAME_PREFIX: salesForceProd
+      WSDL_FILE: wsdl.prod.xml
 
     steps:
       - name: 'Checkout'
@@ -73,7 +75,7 @@ jobs:
 
       - name: WSDL Version
         run: |
-          version=`cat wsdl.prod.xml | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
+          version=`cat ${{ env.WSDL_FILE }} | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
           echo "::set-output name=version::${version}.+"
         id: wsdl_version
 
@@ -83,14 +85,14 @@ jobs:
 
       - name: Build Jar
         run: |
-          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc wsdl.prod.xml salesForceProd-${{ github.event.release.tag_name }}.jar
+          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc ${{ env.WSDL_FILE }} ${{ env.JAR_FILE_NAME_PREFIX }}-${{ github.event.release.tag_name }}.jar
 
       - name: Publish Jar
         env:
           GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.USER_GITHUB }}
           GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
-          mvn -B --settings settings.xml deploy:deploy-file \
+          mvn -B --settings github-packages-mvn-settings.xml deploy:deploy-file \
                   -DgroupId=${{ env.GROUP_ID }} \
                   -DartifactId=${{ env.ARTIFACT_ID }} \
                   -Dversion=${{ github.event.release.tag_name }} \
