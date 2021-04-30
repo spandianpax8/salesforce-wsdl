@@ -60,7 +60,7 @@ jobs:
     timeout-minutes: 5
     env:
       GROUP_ID: com.pax8.sftrial
-      ARTIFACT_ID: sales-force-test
+      ARTIFACT_ID: sales-force-prod
       JAR_FILE_NAME_PREFIX: salesForceProd
       WSDL_FILE: wsdl.prod.xml
 
