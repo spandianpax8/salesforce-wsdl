@@ -38,8 +38,8 @@ jobs:
 
       - name: Publish Jar
         env:
-          GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.GITHUB_PACKAGE_USER_USERNAME }}
-          GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.GITHUB_PACKAGE_USER_TOKEN }}
+          GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.USER_GITHUB }}
+          GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
           mvn -B --settings settings.xml deploy:deploy-file -DgroupId=com.pax8.sftrial -DartifactId=sales-force-test -Dversion=${{ github.event.release.tag_name }} -DgeneratePom=true -Dpackaging=jar -Dfile=salesForceTest-${{ github.event.release.tag_name }}.jar -DrepositoryId=github -Durl=https://maven.pkg.github.com/pax8/pax8
       
@@ -73,8 +73,8 @@ jobs:
 
       - name: Publish Jar
         env:
-          GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.GITHUB_PACKAGE_USER_USERNAME }}
-          GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.GITHUB_PACKAGE_USER_TOKEN }}
+          GITHUB_PACKAGE_USER_USERNAME: ${{ secrets.USER_GITHUB }}
+          GITHUB_PACKAGE_USER_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
           mvn -B --settings settings.xml deploy:deploy-file -DgroupId=com.pax8.sftrial -DartifactId=sales-force-prod -Dversion=${{ github.event.release.tag_name }} -DgeneratePom=true -Dpackaging=jar -Dfile=salesForceProd-${{ github.event.release.tag_name }}.jar -DrepositoryId=github -Durl=https://maven.pkg.github.com/pax8/pax8
       
