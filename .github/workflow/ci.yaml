@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  release:
+    types: [released]
+
+env:
+  JAVA_VERSION: 1.11
+
+jobs:
+  production:
+    name: CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: Setup JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: WSDL Prod Version
+        run: |
+          prod_wsdl_version=`cat wsdl.prod.xml | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
+          echo "::set-output name=prod_wsdl_version::${prod_wsdl_version}.+"
+        id: prod_wsdl_version
+
+      - name: WSDL Test Version
+        run: |
+          test_wsdl_version=`cat wsdl.test.xml | grep "Salesforce.com Enterprise Web Services API Version" | awk '{ print $NF }'`
+          echo "::set-output name=test_wsdl_version::${test_wsdl_version}.+"
+        id: test_wsdl_version
+
+      - name: Download Force WSC Jar for Prod
+        run: |
+          ./gradlew -b wsc-download.gradle download -Pversion=${{ steps.prod_wsdl_version.outputs.prod_wsdl_version }}
+
+      - name: Download Force WSC Jar for Prod
+        run: |
+          ./gradlew -b wsc-download.gradle download -Pversion=${{ steps.prod_wsdl_version.outputs.prod_wsdl_version }}
+
+      - name: Build Prod Jar
+        run: |
+          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc wsdl.prod.xml salesForceProd-${{ github.event.release.tag_name }}.jar
+      
+      - name: Build Test Jar
+        run: |
+          java -Dpackage-prefix=wsc -classpath ".:jar/*" com.sforce.ws.tools.wsdlc wsdl.test.xml salesForceTest-${{ github.event.release.tag_name }}.jar
