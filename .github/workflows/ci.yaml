@@ -5,7 +5,7 @@ on:
     types: [released]
 
 env:
-  JAVA_VERSION: 1.11
+  JAVA_VERSION: 1.8
 
 jobs:
   wsdl_test:
@@ -22,7 +22,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
 
-      - name: Setup JDK 11
+      - name: Setup JDK 8
         uses: actions/setup-java@v1
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -68,7 +68,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
 
-      - name: Setup JDK 11
+      - name: Setup JDK 8
         uses: actions/setup-java@v1
         with:
           java-version: ${{ env.JAVA_VERSION }}
