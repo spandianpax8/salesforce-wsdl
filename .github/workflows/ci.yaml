@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      GROUP_ID: com.pax8.sftrial
+      GROUP_ID: com.pax8.sforce
       ARTIFACT_ID: sales-force-test
       JAR_FILE_NAME_PREFIX: salesForceTest
       WSDL_FILE: wsdl.test.xml
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      GROUP_ID: com.pax8.sftrial
+      GROUP_ID: com.pax8.sforce
       ARTIFACT_ID: sales-force-prod
       JAR_FILE_NAME_PREFIX: salesForceProd
       WSDL_FILE: wsdl.prod.xml
