@@ -19,6 +19,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
+          git fetch origin main
+          git fetch origin master
+          git checkout -b master origin/main
           git remote set-url --push origin https://foo:$GITHUB_TOKEN@github.com/spandianpax8/salesforce-wsdl
-          git push origin master --force
-        
+          git push --set-upstream origin master --force
