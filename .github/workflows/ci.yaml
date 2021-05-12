@@ -17,4 +17,5 @@ jobs:
 
       - name: sync
         run: |
+          git fetch origin master
           git push origin master --force
